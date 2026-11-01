@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis Akidah Akhlak SMP/MTs</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(0, 70, 50, 0.78), rgba(0, 35, 30, 0.85)),
+        radial-gradient(circle at top, #20a070, #063b32);
+    color: white;
+}
+
+body::before {
+    content: "☪ ✦ ☪ ✦ ☪ ✦ ☪ ✦ ☪";
+    position: fixed;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    opacity: 0.15;
+    letter-spacing: 25px;
+    pointer-events: none;
+}
+
+.container {
+    width: 92%;
+    max-width: 950px;
+    margin: 30px auto;
+}
+
+.card {
+    background: rgba(255,255,255,0.96);
+    color: #183b32;
+    border-radius: 25px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #08734f;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #08734f;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #0b7d58;
+    margin: 15px 0 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #527267;
+    margin-bottom: 25px;
+}
+
+.material {
+    line-height: 1.8;
+}
+
+.material-box {
+    background: #e9f8f1;
+    border-left: 6px solid #0b8b60;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 12px;
+}
+
+button {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn-main {
+    background: #087c57;
+    color: white;
+    display: block;
+    margin: 25px auto 0;
+}
+
+.btn-next {
+    background: #0b8b60;
+    color: white;
+    margin-top: 20px;
+}
+
+.btn-retry {
+    background: #e28b17;
+    color: white;
+    margin-top: 15px;
+}
+
+.btn-restart {
+    background: #3949ab;
+    color: white;
+    margin-top: 15px;
+}
+
+.level-title {
+    text-align: center;
+    padding: 15px;
+    border-radius: 15px;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.mudah {
+    background: #149c62;
+}
+
+.sedang {
+    background: #d99418;
+}
+
+.sulit {
+    background: #c44747;
+}
+
+.question {
+    background: #f5faf8;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+    border: 1px solid #d5e9e0;
+}
+
+.question p {
+    font-weight: bold;
+    margin-bottom: 13px;
+}
+
+.option {
+    display: block;
+    background: white;
+    border: 2px solid #d9e8e2;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.option:hover {
+    background: #e9f8f1;
+    border-color: #0b8b60;
+}
+
+.option input {
+    margin-right: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.score {
+    text-align: center;
+    background: #e9f8f1;
+    padding: 25px;
+    border-radius: 18px;
+    margin: 20px 0;
+}
+
+.score-number {
+    font-size: 45px;
+    font-weight: bold;
+    color: #08734f;
+}
+
+.correct-answer {
+    background: #e6f7e9;
+    border-left: 6px solid #159447;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 10px;
+}
+
+.wrong-answer {
+    background: #fff0f0;
+    border-left: 6px solid #d94343;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 10px;
+}
+
+.info {
+    background: #eef5ff;
+    border-left: 6px solid #4775d1;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.progress {
+    height: 12px;
+    background: #dce9e4;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #0b8b60;
+    transition: width 0.4s;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HALAMAN UTAMA -->
+<div id="home" class="card">
+
+    <h1>☪ KUIS AKIDAH AKHLAK ☪</h1>
+
+    <p class="subtitle">
+        Kuis Pembelajaran Akidah Akhlak SMP/MTs
+    </p>
+
+    <div class="material">
+
+        <h2>📚 Materi Pembelajaran</h2>
+
+        <div class="material-box">
+            <h3>1. Pengertian Akidah</h3>
+            <p>
+                Akidah adalah keyakinan atau kepercayaan yang tertanam kuat
+                dalam hati seorang muslim terhadap Allah SWT dan segala sesuatu
+                yang wajib diimani.
+            </p>
+        </div>
+
+        <div class="material-box">
+            <h3>2. Rukun Iman</h3>
+            <p>
+                Rukun iman terdiri dari enam, yaitu iman kepada Allah,
+                malaikat, kitab-kitab Allah, rasul-rasul Allah,
+                hari akhir, serta qada dan qadar.
+            </p>
+        </div>
+
+        <div class="material-box">
+            <h3>3. Pengertian Akhlak</h3>
+            <p>
+                Akhlak adalah sifat atau perilaku yang melekat pada diri
+                seseorang dan tercermin dalam perkataan serta perbuatannya.
+            </p>
+        </div>
+
+        <div class="material-box">
+            <h3>4. Akhlak Terpuji</h3>
+            <p>
+                Akhlak terpuji antara lain jujur, amanah, sabar,
+                rendah hati, disiplin, bertanggung jawab,
+                menghormati orang tua dan menghargai guru.
+            </p>
+        </div>
+
+        <div class="material-box">
+            <h3>5. Akhlak Tercela</h3>
+            <p>
+                Akhlak tercela antara lain berbohong, sombong,
+                iri, dengki, fitnah, mencuri, dan mengadu domba.
+            </p>
+        </div>
+
+        <div class="material-box">
+            <h3>6. Adab kepada Orang Tua dan Guru</h3>
+            <p>
+                Seorang siswa hendaknya berbicara dengan sopan,
+                menghormati, menaati dalam kebaikan, membantu,
+                dan tidak menyakiti orang tua maupun guru.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="info">
+        <b>📌 Aturan Kuis:</b><br>
+        1. Kerjakan Level Mudah terlebih dahulu.<br>
+        2. Setelah selesai, lanjut ke Level Sedang.<br>
+        3. Setelah Level Sedang, lanjut ke Level Sulit.<br>
+        4. Setelah jawaban diperiksa, jawaban yang benar akan ditampilkan.<br>
+        5. Jika ada jawaban salah, kamu harus mengerjakan ulang soal yang salah.
+    </div>
+
+    <button class="btn-main" onclick="mulaiKuis()">
+        🚀 MULAI KUIS
+    </button>
+
+</div>
+
+
+<!-- AREA KUIS -->
+<div id="quizArea" class="card hidden">
+
+    <div id="levelHeader"></div>
+
+    <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <form id="quizForm"></form>
+
+    <button class="btn-next" onclick="periksaJawaban()">
+        ✅ SELESAI & PERIKSA JAWABAN
+    </button>
+
+</div>
+
+
+<!-- HASIL -->
+<div id="resultArea" class="card hidden">
+
+    <h2>📊 HASIL KUIS</h2>
+
+    <div id="scoreArea"></div>
+
+    <div id="answerReview"></div>
+
+    <div id="retryArea"></div>
+
+</div>
+
+
+<div class="footer">
+    © 2026 Kuis Akidah Akhlak | Media Pembelajaran SMP/MTs
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA SOAL
+========================= */
+
+const soal = {
+
+mudah: [
+
+{
+q: "Rukun iman yang pertama adalah iman kepada...",
+a: [
+"Allah SWT",
+"Malaikat",
+"Kitab",
+"Rasul"
+],
+correct: 0
+},
+
+{
+q: "Perilaku berkata sesuai dengan kenyataan disebut...",
+a: [
+"Sabar",
+"Jujur",
+"Sombong",
+"Dengki"
+],
+correct: 1
+},
+
+{
+q: "Menghormati dan menaati orang tua dalam kebaikan merupakan contoh...",
+a: [
+"Akhlak terpuji",
+"Akhlak tercela",
+"Sifat sombong",
+"Sifat iri"
+],
+correct: 0
+},
+
+{
+q: "Jumlah rukun iman adalah...",
+a: [
+"4",
+"5",
+"6",
+"7"
+],
+correct: 2
+},
+
+{
+q: "Lawan dari sifat jujur adalah...",
+a: [
+"Sabar",
+"Amanah",
+"Disiplin",
+"Dusta"
+],
+correct: 3
+}
+
+],
+
+sedang: [
+
+{
+q: "Sikap dapat dipercaya dalam menjalankan tugas disebut...",
+a: [
+"Amanah",
+"Takabur",
+"Hasad",
+"Fitnah"
+],
+correct: 0
+},
+
+{
+q: "Percaya bahwa semua rasul merupakan utusan Allah termasuk iman kepada...",
+a: [
+"Malaikat",
+"Rasul",
+"Kitab",
+"Hari akhir"
+],
+correct: 1
+},
+
+{
+q: "Sifat merasa diri lebih baik daripada orang lain disebut...",
+a: [
+"Tawadhu",
+"Takabur",
+"Sabar",
+"Ikhlas"
+],
+correct: 1
+},
+
+{
+q: "Contoh perilaku amanah di sekolah adalah...",
+a: [
+"Menyontek saat ujian",
+"Menjaga barang titipan teman",
+"Menyebarkan rahasia teman",
+"Berbohong kepada guru"
+],
+correct: 1
+},
+
+{
+q: "Sikap rendah hati dan tidak merasa lebih tinggi dari orang lain disebut...",
+a: [
+"Tawadhu",
+"Takabur",
+"Hasad",
+"Dusta"
+],
+correct: 0
+}
+
+],
+
+sulit: [
+
+{
+q: "Seorang siswa menemukan uang di kelas. Sikap yang paling sesuai dengan akhlak terpuji adalah...",
+a: [
+"Mengambil dan menyimpannya",
+"Membiarkannya sampai hilang",
+"Menyerahkan kepada guru untuk dicari pemiliknya",
+"Memberikannya kepada teman"
+],
+correct: 2
+},
+
+{
+q: "Seseorang tetap berbuat baik meskipun tidak mendapatkan pujian. Sikap tersebut menunjukkan...",
+a: [
+"Riya",
+"Ikhlas",
+"Takabur",
+"Hasad"
+],
+correct: 1
+},
+
+{
+q: "Ketika mendapatkan musibah, seorang muslim tetap berusaha dan menerima ketentuan Allah dengan sabar. Sikap tersebut berkaitan dengan...",
+a: [
+"Iman kepada qada dan qadar",
+"Iman kepada malaikat saja",
+"Iman kepada kitab saja",
+"Iman kepada rasul saja"
+],
+correct: 0
+},
+
+{
+q: "Seorang siswa mengetahui kesalahan temannya tetapi tidak langsung menyebarkan aibnya. Ia menasihatinya secara baik. Sikap tersebut menunjukkan...",
+a: [
+"Menjaga kehormatan sesama",
+"Memfitnah",
+"Takabur",
+"Dengki"
+],
+correct: 0
+},
+
+{
+q: "Perilaku yang menunjukkan penerapan akidah dan akhlak dalam kehidupan sehari-hari adalah...",
+a: [
+"Rajin beribadah tetapi suka berbohong",
+"Percaya kepada Allah dan berusaha berperilaku baik",
+"Menolong hanya ketika dipuji",
+"Berbuat baik hanya kepada orang yang disukai"
+],
+correct: 1
+}
+
+]
+
+};
+
+
+/* =========================
+   VARIABEL
+========================= */
+
+let levelSaatIni = "mudah";
+let indexSoal = 0;
+let soalAktif = [];
+let soalSalah = [];
+let nilaiLevel = 0;
+let nilaiTotal = 0;
+let percobaanPembetulan = false;
+
+
+/* =========================
+   MULAI KUIS
+========================= */
+
+function mulaiKuis() {
+
+    document.getElementById("home").classList.add("hidden");
+
+    document.getElementById("quizArea").classList.remove("hidden");
+
+    document.getElementById("resultArea").classList.add("hidden");
+
+    levelSaatIni = "mudah";
+
+    mulaiLevel();
+
+}
+
+
+/* =========================
+   MULAI LEVEL
+========================= */
+
+function mulaiLevel() {
+
+    soalAktif = soal[levelSaatIni];
+
+    indexSoal = 0;
+
+    nilaiLevel = 0;
+
+    percobaanPembetulan = false;
+
+    tampilkanSoal();
+
+}
+
+
+/* =========================
+   TAMPILKAN SOAL
+========================= */
+
+function tampilkanSoal() {
+
+    const form = document.getElementById("quizForm");
+
+    form.innerHTML = "";
+
+    let judul = "";
+
+    if(levelSaatIni === "mudah") {
+        judul = "🟢 LEVEL MUDAH";
+    }
+
+    if(levelSaatIni === "sedang") {
+        judul = "🟡 LEVEL SEDANG";
+    }
+
+    if(levelSaatIni === "sulit") {
+        judul = "🔴 LEVEL SULIT";
+    }
+
+    document.getElementById("levelHeader").innerHTML =
+        `<div class="level-title ${levelSaatIni}">
+            <h2>${judul}</h2>
+            <p>Soal ${indexSoal + 1} dari ${soalAktif.length}</p>
+        </div>`;
+
+    const data = soalAktif[indexSoal];
+
+    let html = `
+        <div class="question">
+            <p>${indexSoal + 1}. ${data.q}</p>
+    `;
+
+    data.a.forEach((jawaban, i) => {
+
+        html += `
+            <label class="option">
+                <input type="radio"
+                       name="jawaban"
+                       value="${i}">
+                ${String.fromCharCode(65+i)}. ${jawaban}
+            </label>
+        `;
+
+    });
+
+    html += `</div>`;
+
+    form.innerHTML = html;
+
+    let progress =
+        ((indexSoal) / soalAktif.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+
+}
+
+
+/* =========================
+   PERIKSA JAWABAN
+========================= */
+
+function periksaJawaban() {
+
+    const pilihan =
+        document.querySelector(
+            'input[name="jawaban"]:checked'
+        );
+
+    if(!pilihan) {
+
+        alert("Silakan pilih jawaban terlebih dahulu!");
+
+        return;
+
+    }
+
+    const jawabanUser =
+        Number(pilihan.value);
+
+    const data =
+        soalAktif[indexSoal];
+
+    if(jawabanUser === data.correct) {
+
+        nilaiLevel += 20;
+
+    } else {
+
+        soalSalah.push({
+            ...data
+        });
+
+    }
+
+    indexSoal++;
+
+    if(indexSoal < soalAktif.length) {
+
+        tampilkanSoal();
+
+    } else {
+
+        selesaiLevel();
+
+    }
+
+}
+
+
+/* =========================
+   SELESAI LEVEL
+========================= */
+
+function selesaiLevel() {
+
+    document.getElementById("quizArea")
+        .classList.add("hidden");
+
+    document.getElementById("resultArea")
+        .classList.remove("hidden");
+
+    nilaiTotal += nilaiLevel;
+
+    let hasil = "";
+
+    hasil += `
+        <div class="score">
+
+            <h3>Nilai Level ${levelSaatIni.toUpperCase()}</h3>
+
+            <div class="score-number">
+                ${nilaiLevel}
+            </div>
+
+            <p>
+                Nilai diperoleh dari jawaban benar.
+            </p>
+
+        </div>
+    `;
+
+
+    /* =========================
+       TAMPILKAN JAWABAN BENAR
+    ========================= */
+
+    hasil += `
+        <h3>📖 Jawaban yang Benar</h3>
+
+        <div class="info">
+            Berikut adalah jawaban yang benar
+            sebelum masuk ke bagian pembetulan.
+        </div>
+    `;
+
+    soalAktif.forEach((data, i) => {
+
+        hasil += `
+            <div class="correct-answer">
+
+                <b>Soal ${i+1}</b><br>
+
+                ${data.q}<br><br>
+
+                <b>Jawaban benar:</b>
+                ${String.fromCharCode(65 + data.correct)}.
+                ${data.a[data.correct]}
+
+            </div>
+        `;
+
+    });
+
+
+    /* =========================
+       PEMBETULAN
+    ========================= */
+
+    if(soalSalah.length > 0) {
+
+        hasil += `
+            <h3>🔄 PEMBETULAN</h3>
+
+            <div class="wrong-answer">
+
+                Kamu masih memiliki
+                <b>${soalSalah.length}</b>
+                soal yang harus dikerjakan ulang.
+
+                <br><br>
+
+                Pelajari jawaban benar di atas,
+                kemudian kerjakan kembali soal yang salah.
+
+            </div>
+        `;
+
+        document.getElementById("answerReview")
+            .innerHTML = hasil;
+
+        document.getElementById("retryArea")
+            .innerHTML = `
+                <button
+                    class="btn-retry"
+                    onclick="mulaiPembetulan()">
+
+                    🔄 KERJAKAN PEMBETULAN
+
+                </button>
+            `;
+
+    } else {
+
+        hasil += `
+            <div class="correct-answer">
+
+                🎉 Semua jawaban pada level ini benar!
+
+            </div>
+        `;
+
+        document.getElementById("answerReview")
+            .innerHTML = hasil;
+
+        lanjutLevel();
+
+    }
+
+}
+
+
+/* =========================
+   PEMBETULAN
+========================= */
+
+function mulaiPembetulan() {
+
+    soalAktif = soalSalah;
+
+    soalSalah = [];
+
+    indexSoal = 0;
+
+    percobaanPembetulan = true;
+
+    document.getElementById("resultArea")
+        .classList.add("hidden");
+
+    document.getElementById("quizArea")
+        .classList.remove("hidden");
+
+    tampilkanSoal();
+
+}
+
+
+/* =========================
+   LANJUT LEVEL
+========================= */
+
+function lanjutLevel() {
+
+    let pesan = "";
+
+    if(levelSaatIni === "mudah") {
+
+        pesan = `
+            <div class="info">
+                🎉 Level Mudah selesai!
+                <br><br>
+                Sekarang kamu dapat melanjutkan
+                ke <b>Level Sedang</b>.
+            </div>
+
+            <button
+                class="btn-next"
+                onclick="nextLevel('sedang')">
+
+                ➡️ LANJUT LEVEL SEDANG
+
+            </button>
+        `;
+
+    }
+
+    else if(levelSaatIni === "sedang") {
+
+        pesan = `
+            <div class="info">
+                🎉 Level Sedang selesai!
+                <br><br>
+                Sekarang lanjut ke
+                <b>Level Sulit</b>.
+            </div>
+
+            <button
+                class="btn-next"
+                onclick="nextLevel('sulit')">
+
+                🔥 LANJUT LEVEL SULIT
+
+            </button>
+        `;
+
+    }
+
+    else {
+
+        pesan = `
+            <div class="score">
+
+                <h2>🏆 KUIS SELESAI!</h2>
+
+                <p>
+                    Kamu telah menyelesaikan
+                    seluruh level.
+                </p>
+
+                <div class="score-number">
+                    ${nilaiTotal}
+                </div>
+
+                <p>
+                    Total nilai dari seluruh level.
+                </p>
+
+            </div>
+
+            <button
+                class="btn-restart"
+                onclick="location.reload()">
+
+                🔁 ULANGI KUIS
+
+            </button>
+        `;
+
+    }
+
+    document.getElementById("retryArea")
+        .innerHTML = pesan;
+
+}
+
+
+/* =========================
+   LEVEL BERIKUTNYA
+========================= */
+
+function nextLevel(level) {
+
+    levelSaatIni = level;
+
+    soalSalah = [];
+
+    document.getElementById("resultArea")
+        .classList.add("hidden");
+
+    document.getElementById("quizArea")
+        .classList.remove("hidden");
+
+    mulaiLevel();
+
+}
+
+</script>
+
+</body>
+</html>
